@@ -1,0 +1,61 @@
+{
+  "name": "hire-sphere",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/hire-sphere/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/hire-sphere",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/hire-sphere/src/main.ts",
+        "tsConfig": "apps/hire-sphere/tsconfig.app.json",
+        "assets": ["apps/hire-sphere/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "generateLockfile": true,
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "hire-sphere:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "hire-sphere:build:development"
+        },
+        "production": {
+          "buildTarget": "hire-sphere:build:production"
+        }
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/hire-sphere/Dockerfile . -t hire-sphere"
+    }
+  }
+}
