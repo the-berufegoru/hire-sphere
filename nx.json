@@ -35,5 +35,6 @@
       },
       "exclude": ["apps/hire-sphere-e2e/**/*"]
     }
-  ]
+  ],
+  "nxCloudAccessToken": "MjA1MDMxYmMtZjZhNC00ZjUwLTk5ZjAtYWQyZTIwNTkyNzhjfHJlYWQtd3JpdGU="
 }
