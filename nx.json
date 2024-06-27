@@ -33,7 +33,15 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/hire-sphere-e2e/**/*"]
+      "exclude": [
+        "apps/hire-sphere-e2e/**/*",
+        "apps/authentication-e2e/**/*",
+        "apps/admin-e2e/**/*",
+        "apps/recruiter-e2e/**/*",
+        "apps/candidate-e2e/**/*",
+        "apps/job-e2e/**/*",
+        "apps/application-e2e/**/*"
+      ]
     }
   ],
   "nxCloudAccessToken": "MjA1MDMxYmMtZjZhNC00ZjUwLTk5ZjAtYWQyZTIwNTkyNzhjfHJlYWQtd3JpdGU="
