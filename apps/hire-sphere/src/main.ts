@@ -1,14 +1,49 @@
-import express from 'express';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * @fileoverview Server setup and configuration.
+ * @version 1.0.0
+ * @module server
+ */
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+import dotenv from 'dotenv';
+import http from 'http';
+import ip from 'ip';
+import os from 'os';
+import app from './configs/appConfig';
+import { logger } from './utils';
 
-const app = express();
+dotenv.config();
 
-app.get('/', (req, res) => {
-  res.send({ message: 'Hello API' });
+const PORT: string | number = process.env.PORT ?? 3000;
+
+/**
+ * The HTTPS server instance.
+ * @type {http.Server}
+ */
+const server: http.Server = http.createServer(app);
+
+// Error handling for address in use
+server.on('error', (e: any) => {
+  if (e.code === 'EADDRINUSE') {
+    logger.error('Address in use, retrying...', { ...e });
+    setTimeout(() => {
+      server.close();
+      server.listen(PORT, () => {
+        logger.info({
+          service_name: 'hire-sphere',
+          host: `http://${ip.address()}:${PORT}`,
+          platform: os.platform(),
+        });
+      });
+    }, 1000);
+  }
 });
 
-app.listen(port, host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
+// Start the HTTP server
+server.listen(PORT, () => {
+  logger.info({
+    service_name: 'hire-sphere',
+    host: `http://${ip.address()}:${PORT}`,
+    platform: os.platform(),
+  });
 });
